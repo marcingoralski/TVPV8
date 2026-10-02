@@ -25,7 +25,7 @@ jobs:
         os: [ubuntu, macos, windows]
         # Debug builds on pull requests, Release builds on pushes
         buildtype: ${{ github.event_name == 'pull_request' && fromJSON('["Debug"]') || fromJSON('["Release"]') }}
-        luajit: [on, off]
+        luajit: [on]
 
     env:
       VCPKG_BUILD_TYPE: release
@@ -38,7 +38,6 @@ jobs:
         uses: lukka/get-cmake@latest
 
       - name: Enable LuaJIT
-        if: matrix.luajit == 'on'
         run: echo "VCPKG_FEATURE_FLAGS=luajit" >> $GITHUB_ENV
 
       - name: Run vcpkg

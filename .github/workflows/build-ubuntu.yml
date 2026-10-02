@@ -34,7 +34,7 @@ jobs:
       matrix:
         # Debug builds on pull requests, Release builds on pushes
         buildtype: ${{ github.event_name == 'pull_request' && fromJSON('["Debug"]') || fromJSON('["Release"]') }}
-        luajit: [on, off]
+        luajit: [on]
 
     steps:
       - uses: actions/checkout@v6
@@ -45,7 +45,6 @@ jobs:
           languages: cpp
           # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
           queries: +security-extended,security-and-quality
-        if: matrix.luajit == 'on'
 
       - name: Get latest CMake
         # Using 'latest' branch, the latest CMake is installed.
@@ -69,11 +68,10 @@ jobs:
         uses: github/codeql-action/analyze@v4
         with:
           category: "/language:cpp"
-        if: matrix.luajit == 'on'
 
       - name: Upload artifact binary
         uses: actions/upload-artifact@v6
-        if: matrix.buildtype == 'Release' && matrix.luajit == 'on'
+        if: matrix.buildtype == 'Release'
         with:
           name: tvp
           path: ${{ github.workspace }}/${{ matrix.buildtype }}
