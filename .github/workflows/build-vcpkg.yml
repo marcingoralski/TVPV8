@@ -23,7 +23,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu, macos, windows]
-        buildtype: [Debug, Release]
+        # Debug builds on pull requests, Release builds on pushes
+        buildtype: ${{ github.event_name == 'pull_request' && fromJSON('["Debug"]') || fromJSON('["Release"]') }}
         luajit: [on, off]
 
     env:
