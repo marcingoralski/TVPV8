@@ -1,0 +1,9 @@
+Module
+  name: autotest
+  description: Scripted login/relog for PR evidence
+  author: review
+  sandboxed: false
+  autoload: true
+  autoload-priority: 1001
+  scripts: [ autotest ]
+  @onLoad: init()
